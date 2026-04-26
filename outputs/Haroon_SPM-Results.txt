@@ -1,1 +1,19 @@
+======================================================================
+FINAL RESULTS: MCL AND CRC AS SECOND PRIMARY MALIGNANCY
+======================================================================
 
+Metric                                Controls        MCL Patients
+----------------------------------------------------------------------
+Number of persons                     61469           12350
+Number of person years                732612.6        147506.7
+Number of events                      528             151
+Incidence rate per 1000 PY (95% CI)   0.72 (0.66-0.78) 1.02 (0.87-1.2)
+Unadjusted HR (95% CI)                1 (Ref.)        1.41 (1.18-1.69)
+Adjusted* HR (95% CI)                 1 (Ref.)        1.39 (1.16-1.66)
+
+*Adjusted for age and sex
+======================================================================
+
+
+##Scientific Interpretation:
+This large matched cohort study demonstrates that Mantle Cell Lymphoma (MCL) patients have a significantly higher risk of colorectal cancer (CRC) as a second primary malignancy compared to matched population controls. The incidence rate was 1.02 per 1,000 person-years among MCL patients versus 0.72 among controls. The adjusted hazard ratio (HR) of 1.39 (95% CI 1.16–1.66) indicates that the risk is independent of age and sex. These findings support the hypothesis that MCL or its treatment confers increased susceptibility to subsequent colorectal cancer. Consequently, enhanced surveillance for colorectal neoplasia may be warranted in MCL survivors.

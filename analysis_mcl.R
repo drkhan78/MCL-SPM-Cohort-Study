@@ -107,6 +107,8 @@ cat("Persons with CRC event:", sum(demo$event, na.rm = TRUE), "\n")
 cat("MCL patients with CRC:", sum(demo$event[demo$Exposure == "MCL"], na.rm = TRUE), "\n")
 cat("Controls with CRC:", sum(demo$event[demo$Exposure == "control"], na.rm = TRUE), "\n")
 
+
+
 # ================================================================
 # 3. FINAL ANALYSIS: Incidence Rates + Cox Models
 # ================================================================
@@ -149,6 +151,8 @@ hr_adj <- adj_summary$conf.int[1, "exp(coef)"] # Exposure coefficient is first
 lower_adj <- adj_summary$conf.int[1, "lower .95"]
 upper_adj <- adj_summary$conf.int[1, "upper .95"]
 
+
+
 # 4. Build the exact table requested in the Instructions.docx
 final_table <- data.frame(
     Metric = c("Number of persons", "Number of person years", "Number of events",
@@ -175,9 +179,95 @@ final_table <- data.frame(
 print("=== FINAL RESULTS TABLE ===")
 print(final_table, right = FALSE)
 
+
+
 # 5. Save for my document
 write.table(final_table, file = "Haroon_SPM.txt", sep = "\t", 
             row.names = FALSE, quote = FALSE)
 
 cat("\nTable successfully saved as 'Haroon_SPM.txt'\n")
 cat("Copy this into Word, format as a nice table, and add interpretation.\n")
+
+
+
+
+# ===================================================================
+# =========================== VISUALIZATIONS ========================
+# ===================================================================
+
+cat("\n=== Generating Visualizations ===\n")
+
+# 1. Creating a visualization of the survival probability (Kaplan-Meier)
+fit_control <- survfit(Surv(time_years, event) ~ 1, data = filter(demo, Exposure == "control"))
+fit_mcl     <- survfit(Surv(time_years, event) ~ 1, data = filter(demo, Exposure == "MCL"))
+
+km_plot <- ggsurvplot(
+  list("Controls" = fit_control, "MCL patients" = fit_mcl),
+  combine = TRUE,
+  risk.table = TRUE,
+  pval = TRUE,
+  conf.int = TRUE,
+  xlab = "Time since start of follow-up (years)",
+  ylab = "CRC-free Survival Probability",
+  title = "Kaplan-Meier Survival Curves\nFreedom from Colorectal Cancer as Second Primary Malignancy",
+  palette = c("royalblue", "darkred"),
+  legend.title = "Group",
+  legend.labs = c("Controls", "MCL patients"),
+  tables.height = 0.25,
+  ggtheme = theme_minimal(base_size = 14)
+)
+
+print(km_plot)
+ggsave("KM_Survival_Curves.png", plot = km_plot$plot, width = 10, height = 8, dpi = 300)
+
+
+
+
+# 2. Forest Plot (Hazard Ratio Visualization)
+hr_results <- data.frame(
+  Model = c("Unadjusted HR", "Adjusted* HR (age & sex)"),
+  HR    = c(hr_unadj, hr_adj),
+  lower = c(lower_unadj, lower_adj),
+  upper = c(upper_unadj, upper_adj)
+)
+
+forest_plot <- ggplot(hr_results, aes(x = HR, y = Model)) +
+  geom_point(size = 4, color = "darkred") +
+  geom_errorbarh(aes(xmin = lower, xmax = upper), height = 0.3, linewidth = 0.8, color = "darkred") +
+  geom_vline(xintercept = 1, linetype = "dashed", color = "gray50") +
+  geom_text(aes(x = HR + 0.12, label = sprintf("%.2f (%.2f–%.2f)", HR, lower, upper)),
+            hjust = 0, size = 4.2) +
+  labs(title = "Hazard Ratio of Colorectal Cancer as Second Primary Malignancy",
+       subtitle = "MCL patients vs matched controls",
+       x = "Hazard Ratio (95% CI)") +
+  theme_minimal(base_size = 14) +
+  theme(axis.title.y = element_blank())
+
+print(forest_plot)
+ggsave("Forest_Plot_Hazard_Ratios.png", forest_plot, width = 9.5, height = 5, dpi = 300)
+
+
+
+
+# 3. Incidence Rate Comparison
+ir_data <- summary_stats %>%
+  mutate(Group = ifelse(Exposure == "control", "Controls", "MCL patients"))
+
+ir_plot <- ggplot(ir_data, aes(x = Group, y = ir_per1000, fill = Group)) +
+  geom_col(alpha = 0.85, width = 0.65) +
+  geom_errorbar(aes(ymin = ir_lower, ymax = ir_upper), width = 0.25, linewidth = 0.9) +
+  scale_fill_manual(values = c("Controls" = "royalblue", "MCL patients" = "darkred")) +
+  labs(title = "Incidence Rate of Colorectal Cancer as SPM",
+       y = "Incidence Rate per 1,000 Person-Years (95% CI)",
+       x = NULL) +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
+
+print(ir_plot)
+ggsave("Incidence_Rate_Comparison.png", ir_plot, width = 8, height = 6.5, dpi = 300)
+
+cat("\nAll three visualizations have been successfully generated and saved!\n")
+cat("Files created:\n")
+cat("   1. KM_Survival_Curves.png\n")
+cat("   2. Forest_Plot_Hazard_Ratios.png\n")
+cat("   3. Incidence_Rate_Comparison.png\n")

@@ -15,5 +15,10 @@ Adjusted* HR (95% CI)                 1 (Ref.)        1.39 (1.16-1.66)
 ======================================================================
 
 
-##Scientific Interpretation:
-This large matched cohort study demonstrates that Mantle Cell Lymphoma (MCL) patients have a significantly higher risk of colorectal cancer (CRC) as a second primary malignancy compared to matched population controls. The incidence rate was 1.02 per 1,000 person-years among MCL patients versus 0.72 among controls. The adjusted hazard ratio (HR) of 1.39 (95% CI 1.16–1.66) indicates that the risk is independent of age and sex. These findings support the hypothesis that MCL or its treatment confers increased susceptibility to subsequent colorectal cancer. Consequently, enhanced surveillance for colorectal neoplasia may be warranted in MCL survivors.
+Scientific Interpretation:
+This large matched cohort study demonstrates that Mantle Cell Lymphoma (MCL) patients have a significantly higher risk of colorectal
+cancer (CRC) as a second primary malignancy compared to matched population controls. The incidence rate was 1.02 per 1,000 person-years
+among MCL patients versus 0.72 among controls. The adjusted hazard ratio (HR) of 1.39 (95% CI 1.16–1.66) indicates that the risk is
+independent of age and sex. These findings support the hypothesis that MCL or its treatment confers increased susceptibility to
+subsequent colorectal cancer. Consequently, enhanced surveillance for colorectal neoplasia may be warranted in MCL survivors.
+
